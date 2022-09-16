@@ -1,0 +1,114 @@
+﻿@model IEnumerable<PayPalPaymentIntergration.Models.BookWithGenreName>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+    <a asp-action="Checkout" asp-controller="Orders">Check out</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Introduction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.BookId">Edit | </a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.BookId">Details</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.BookId">| Delete</a>
+                    }
+                    <a asp-action="Index" asp-route-id="@item.BookId"> | Choose </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br>
+<form asp-controller="Books" asp-action="Index2" method="get" id="pageForm">
+    <table cellpadding="0" cellspacing="0">
+        <tr id="pageNumberRow">
+            @for (int i = 1; i <= Model.ElementAt(0).TotalPageNumber; i++)
+            {
+            <td style="width: 1rem">
+                @if (Model.ElementAt(0).CurrentPageIndex == 0)
+                {
+                    @if (i == 1)
+                    {
+                        <span>@i</span>
+                    }
+                    else
+                    {
+                        <a href="javascript:PageClick(@i);" style="text-decoration: underline">@i</a>
+                    }
+                }
+                else if (i != Model.ElementAt(0).CurrentPageIndex)
+                {
+                <a href="javascript:PageClick(@i);" style="text-decoration: underline">@i</a>
+                }
+                else
+                {
+                <span>@i</span>
+                }
+            </td>
+            }
+        </tr>
+    </table>
+    <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+</form>
+<p>
+    
+    <script>
+        function PageClick(pageIndex) {
+            document.getElementById("hfCurrentPageIndex").value = pageIndex;
+            document.forms['pageForm'].submit();
+        }
+    </script>

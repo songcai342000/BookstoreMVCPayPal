@@ -1,0 +1,38 @@
+﻿
+@model IEnumerable<PayPalPaymentIntergration.Models.Event> 
+
+    @{
+        ViewData["Title"] = "Events";
+    }
+
+    <h1>Subject Numbers</h1>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Time)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.EventItem)
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td class="total">
+                        @Html.DisplayFor(modelItem => item.EventItem)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>

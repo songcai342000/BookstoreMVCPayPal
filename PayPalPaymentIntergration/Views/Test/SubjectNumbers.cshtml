@@ -1,0 +1,61 @@
+﻿
+@model IEnumerable<PayPalPaymentIntergration.Models.SubjectNumber> 
+
+    @{
+        ViewData["Title"] = "SubjectNumbers";
+    }
+
+    <h1>Subject Numbers</h1>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Number)
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td class="total">
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+
+                </tr>
+            }
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>@Model.Sum(i => i.Number)</td>
+            </tr>
+            <tr>
+                <td>Count</td>
+                <td>@Model.Count()</td>
+            </tr>
+            <tr>
+                <td>Avg</td>
+                <td>@Model.Average(i => i.Number).ToString("0.00")</td>
+            </tr>
+            <tr>
+                <td>Min</td>
+                <td>@Model.Min(i => i.Number)</td>
+            </tr>
+            <tr>
+                <td>Max</td>
+                <td>@Model.Max(i => i.Number)</td>
+            </tr>
+        </tfoot>
+    </table>

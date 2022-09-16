@@ -1,0 +1,22 @@
+﻿@model IEnumerable<PayPalPaymentIntergration.Models.Order>
+@{
+    ViewData["Title"] = "Payment Successful";
+}
+
+<div asp-controll="Orders" asp-action="PaymentSuccess">Payment is successful</div>
+<script>
+    
+        var status = { paymentStatus: 'Paid' };
+        fetch('Orders/PaymentSuccess', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(status)
+        })
+            .then(response => response.json())
+            .catch(error => console.error('Unable to update.', error));
+    
+</script>
+  

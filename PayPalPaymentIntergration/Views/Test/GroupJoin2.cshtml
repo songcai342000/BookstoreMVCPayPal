@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<PayPalPaymentIntergration.Models.PetsOwners> 
+
+    @{
+        ViewData["Title"] = "QueryHighScores";
+    }
+
+    <h1>QueryHighScore</h1>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Owner)
+                </th>
+           
+                <th>
+                    Pets
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.GroupBy(item => item.Owner))
+            {
+  
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => group.Key)
+                    </td>
+
+                    <td>
+                        <table>
+
+                            @foreach (var item in group)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pets)
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+
+                    </td>
+
+                </tr>
+                }
+            </tbody>
+    </table>

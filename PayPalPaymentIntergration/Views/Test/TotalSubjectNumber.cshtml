@@ -1,0 +1,28 @@
+﻿
+@model PayPalPaymentIntergration.Models.TotalNumber 
+
+    @{
+        ViewData["Title"] = "Total SubjectNumbers";
+    }
+
+    <h1>Total Subject Numbers</h1>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Number)
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.Number)
+                        </td>
+
+                    </tr>
+            </tbody>
+    </table>

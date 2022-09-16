@@ -1,0 +1,40 @@
+﻿
+@model IEnumerable<PayPalPaymentIntergration.Models.PersonsPets> 
+
+    @{
+        ViewData["Title"] = "PersonsPets";
+    }
+
+    <h1>Persons and their pets</h1>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+           
+                <th>
+                    @Html.DisplayNameFor(model => model.PetName)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+  
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem =>item.FirstName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PetName)
+                    </td>
+
+                </tr>
+                }
+            </tbody>
+    </table>

@@ -1,0 +1,146 @@
+﻿@model IEnumerable<PayPalPaymentIntergration.Models.CartItem>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "CartItems";
+}
+
+
+<h1>Details</h1>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImageUrl)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ImageUrl)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td class="total">
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+
+
+</div>
+<div>
+    <div id="checkout" class="w-25"></div>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="Books">Back to List</a>
+</div>
+<script src="https://www.paypal.com/sdk/js?client-id=AWduqFNet_25HUONAefCkkGFjnz-Bvhaax5pu6gGjqRDdhpgbTxLOWCTB2UpXrcH1g6la8mvWclddJdL&intent=capture"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    let totals = document.getElementsByClassName('total');
+    let v = 0;
+    for (let i = 0; i < totals.length; i++) {
+        v += parseInt(totals[i].innerHTML);
+    }
+    v.toString();
+
+    paypal.Buttons(
+        {
+            createOrder: function (data, actions) {
+
+                // This function sets up the details of the transaction, including the amount and line item details.
+
+                return actions.order.create({
+
+                    purchase_units: [{
+
+                        amount: {
+
+                            value: v
+
+                        }
+
+                    }]
+
+                });
+
+            },
+            onApprove: function (data, actions) {
+                v = 0;
+                // Authorize the transaction
+
+                actions.order.authorize().then(function (authorization) {
+
+
+                    // Get the authorization id
+
+                    var authorizationID = authorization.purchase_units[0]
+
+                        .payments.authorizations[0].id
+
+                    // Call your server to validate and capture the transaction
+
+                    fetch('/paypal-transaction-complete', {
+
+                        method: 'post',
+
+                        headers: {
+
+                            'content-type': 'application/json'
+
+                        },
+
+                        body: JSON.stringify({
+
+                            orderID: data.orderID,
+
+                            authorizationID: authorizationID
+
+                        })
+                    })
+                });
+            },
+            onCancel: function (data) {
+                alert('Transaction canceled by ' + details.payer.name.given_name);
+            },
+            onError: function (err) {
+
+                // For example, redirect to a specific error page
+                window.location.href = '/Orders/TransactionErrors';
+            }
+        }
+    ).render('#checkout');
+</script>
