@@ -3,3 +3,4 @@ The project is written with .Net 5.0
 Admin role is applied. Different roles have different rights and access areas.
 An additional property is added to the default Index.html.cs and Index.html pages.
 TestController, Person class, PersonsPets class, Pets class, PetsOwner class, Student class, Subject Number class, Total Number class and their views are not relevant to the main logic of the project. They were written for another excise.
+The project is written in 2021, updated in 2022
